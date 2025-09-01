@@ -65,3 +65,25 @@ def download_documents_zip(request):
             {'error':f'erreur lors de la creation du zip: {str(e)}'},
             status  = status.HTTP_500_INTERNAL_SERVER_ERROR
         )
+        
+
+
+@api_view(['GET'])
+@permission_classes([permissions.IsAuthenticated])
+def document_stats(request):
+    """Statistiques des documents de l'utilisateur"""
+    
+    user_documents = Document.objects.filter(user=request.user)
+    
+    stats = {
+        'total_documents': user_documents.count(),
+        'categories': {}
+    }
+    
+    # compter par categories
+    for category, _ in Document.CATEGORY_CHOICES:
+        count = user_documents.filter(category=category).count()
+        stats['categories'][category] = count
+
+
+    return Response(stats)
