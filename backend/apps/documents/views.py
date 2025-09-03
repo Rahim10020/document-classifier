@@ -23,7 +23,7 @@ class DocumentListView(generics.ListAPIView):
         return queryset
     
 
-class DocumentDetailPreview(generics.RetrieveUpdateDestroyAPIView):
+class DocumentDetailView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class    = DocumentSerializer
     permission_classes  = [permissions.IsAuthenticated]
     
