@@ -45,7 +45,7 @@ class AuthenticationTests(APITestCase):
         self.assertTrue('tokens' in response.data)
         
     
-    def test_profile_access(self):
+    def test_profile_access(self):  
         """Test d'acces au profil utilisateur"""
         
         user = User.objects.create_user(
@@ -59,4 +59,4 @@ class AuthenticationTests(APITestCase):
         url         = reverse('profile')
         response    = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data['email', 'test@example.com'])
+        self.assertEqual(response.data['email'], 'test@example.com')

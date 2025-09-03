@@ -8,11 +8,12 @@ from django.http import HttpResponse
 from .models import Document
 from .serializers import DocumentSerializer, DocumentListSerializer, DocumentUploadSerializer
 from .services import DocumentProcessingService
+from .permissions import IsOwnerOrReadOnly
 
 # Create your views here.
 
 class DocumentListView(generics.ListAPIView):
-    serializer_class    = DocumentListSerializer,
+    serializer_class    = DocumentListSerializer
     permission_classes  = [permissions.IsAuthenticated]
     
     def get_queryset(self):
@@ -25,10 +26,10 @@ class DocumentListView(generics.ListAPIView):
 
 class DocumentDetailView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class    = DocumentSerializer
-    permission_classes  = [permissions.IsAuthenticated]
+    permission_classes  = [permissions.IsAuthenticated, IsOwnerOrReadOnly]
     
     def get_queryset(self):
-        return Document.objects.filter(self.request.user)
+        return Document.objects.filter(user=self.request.user)
 
 
 

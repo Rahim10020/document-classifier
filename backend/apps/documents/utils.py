@@ -7,19 +7,23 @@ from django.conf import settings
 
 
 def get_file_type(file_path):
-    
     """Determine le type de fichier"""
     
-    mime        = magic.Magic(mime=True)
-    file_type   = mime.from_file(file_path)
-    
-    if 'pdf' in file_type:
-        return 'pdf'
-    elif 'wordprocessingml' in file_type or 'msword' in file_type:
-        return 'docx'
-    elif 'presentationml' in file_type or 'presentation' in file_type:
-        return 'pptx'
-    else:
+    try:
+        import magic
+        mime = magic.Magic(mime=True)
+        file_type = mime.from_file(file_path)
+    except ImportError:
+        # Fallback si python-magic n'est pas disponible
+        _, ext = os.path.splitext(file_path)
+        ext_to_mime = {
+            '.pdf': 'application/pdf',
+            '.docx': 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+            '.pptx': 'application/vnd.openxmlformats-officedocument.presentationml.presentation'
+        }
+        file_type = ext_to_mime.get(ext.lower(), 'unknown')
+    except Exception as e:
+        print(f"Erreur lors de la détection du type : {e}")
         return 'unknown'
     
 

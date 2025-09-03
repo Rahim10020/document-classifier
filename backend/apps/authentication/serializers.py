@@ -4,7 +4,7 @@ from django.contrib.auth.password_validation import validate_password
 from .models import CustomUser
 
 class UserRegistrationSerializer(serializers.ModelSerializer):
-    password           = serializers.CharField(write_only=True, validator = [validate_password])
+    password           = serializers.CharField(write_only=True, validators = [validate_password])
     password_confirm   = serializers.CharField(write_only=True)
     
     class Meta:
@@ -27,8 +27,8 @@ class UserLoginSerializer(serializers.ModelSerializer):
     password    = serializers.CharField()
     
     def validate(self, attrs):
-        email       = attrs.get['email']
-        password    = attrs.get['password']
+        email       = attrs.get('email')
+        password    = attrs.get('password')
         
         if email and password:
             user = authenticate(username=email, password=password)
@@ -38,7 +38,7 @@ class UserLoginSerializer(serializers.ModelSerializer):
                 raise serializers.ValidationError("Compte utilisateur desactive")
             attrs['user'] = user
         else:
-            raise serializers.ValidationError("Email uet mot de passe requis")
+            raise serializers.ValidationError("Email et mot de passe requis")
         return attrs
     
 

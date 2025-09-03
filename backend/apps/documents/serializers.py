@@ -1,6 +1,8 @@
 from rest_framework import serializers
 from .models import Document
 from django.conf import settings
+import re
+import os
 
 class DocumentSerializer(serializers.ModelSerializer):
     file_name = serializers.ReadOnlyField()
@@ -32,6 +34,16 @@ class DocumentUploadSerializer(serializers.ModelSerializer):
         allowed_types = ['application/pdf', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document','application/vnd.openxmlformats-officedocument.presentationml.presentation']
         if value.content_type not in allowed_types:
             raise serializers.ValidationError("Type de fichier non supporte. Utilisez PDF, PPTX ou DOCX")
+        
+        # Validation du nom de fichier
+        if not re.match(r'^[a-zA-Z0-9._-]+$', value.name):
+            raise serializers.ValidationError("Nom de fichier invalide")
+        
+        # Vérification de l'extension
+        allowed_extensions = ['.pdf', '.docx', '.pptx']
+        file_ext = os.path.splitext(value.name)[1].lower()
+        if file_ext not in allowed_extensions:
+            raise serializers.ValidationError("Extension de fichier non autorisée")
         
         return value
     
