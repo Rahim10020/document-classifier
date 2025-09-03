@@ -76,5 +76,5 @@ class DocumentTests(APITestCase):
         url = "/api/documents/stats/"
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertTrue('total_document' in response.data)
+        self.assertTrue('total_documents' in response.data)
         self.assertTrue('categories' in response.data)
