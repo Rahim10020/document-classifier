@@ -7,7 +7,7 @@ from .models import Document
 class DocumentAdmin(admin.ModelAdmin):
     list_display    = ['title','category','file_type','user','created_at']
     list_filter     = ['category','file_type','created_at']
-    search_fields   = ['email','username']
+    search_fields   = ['title', 'user__email', 'user__username']
     ordering        = ['email']
     
     fieldsets       = UserAdmin.fieldsets  + (
