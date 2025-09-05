@@ -48,7 +48,7 @@ class ApiService {
                 const originalRequest = error.config;
 
                 // Si erreur 401 et qu'on n'a pas déjà tenté de refresh
-                if (error.response?.status === 401 && originalRequest && !originalRequest._retry) {
+                if (error.response?.status == 401 && originalRequest && !originalRequest._retry) {
                     originalRequest._retry = true;
 
                     try {
@@ -78,23 +78,23 @@ class ApiService {
 
     // methodes d'authentification
     private getAccessToken(): string | null {
-        if (typeof window === 'undefined') return null;
+        if (typeof window == 'undefined') return null;
         return localStorage.getItem(STORAGE_KEYS.ACCESS_TOKEN);
     }
 
     private getRefreshToken(): string | null {
-        if (typeof window === 'undefined') return null;
+        if (typeof window == 'undefined') return null;
         return localStorage.getItem(STORAGE_KEYS.REFRESH_TOKEN);
     }
 
     private setTokens(accessToken: string, refreshToken: string): void {
-        if (typeof window === 'undefined') return;
+        if (typeof window == 'undefined') return;
         localStorage.setItem(STORAGE_KEYS.ACCESS_TOKEN, accessToken);
         localStorage.setItem(STORAGE_KEYS.REFRESH_TOKEN, refreshToken);
     }
 
     private setUserData(user: User): void {
-        if (typeof window === 'undefined') return;
+        if (typeof window == 'undefined') return;
         localStorage.setItem(STORAGE_KEYS.USER_DATA, JSON.stringify(user));
     }
 
@@ -173,7 +173,7 @@ class ApiService {
 
     // deconnexion
     logout(): void {
-        if (typeof window === 'undefined') return;
+        if (typeof window == 'undefined') return;
         localStorage.removeItem(STORAGE_KEYS.ACCESS_TOKEN);
         localStorage.removeItem(STORAGE_KEYS.REFRESH_TOKEN);
         localStorage.removeItem(STORAGE_KEYS.USER_DATA);
@@ -270,14 +270,14 @@ class ApiService {
 
     // verifier si l'utilisateur est authentifie
     isAuthenticated(): boolean {
-        if (typeof window === 'undefined') return false;
+        if (typeof window == 'undefined') return false;
         const token = this.getAccessToken();
         return !!token;
     }
 
     // recuperer les donnes utilisateur du localstorage
     getCurrentUser(): User | null {
-        if (typeof window === 'undefined') return null;
+        if (typeof window == 'undefined') return null;
         const userData = localStorage.getItem(STORAGE_KEYS.USER_DATA);
         return userData ? JSON.parse(userData) : null;
     }
