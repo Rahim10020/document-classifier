@@ -155,4 +155,33 @@ export const useAuth = () => {
         }
         return authState.isAuthenticated;
     }, [authState.isAuthenticated, authState.isLoading, router]);
-}
+
+
+    // Fonction pour rediriger les utilisateurs authenfies (utile pour les pages login/register)
+    const requireGuest = useCallback(() => {
+        if (!authState.isLoading && !authState.isAuthenticated) {
+            router.push('/dashboard');
+            return false;
+        }
+        return !authState.isAuthenticated;
+    }, [authState.isAuthenticated, authState.isLoading, router]);
+
+
+    return {
+        // Etat
+        user: authState.user,
+        isAuthenticated: authState.isAuthenticated,
+        isLoading: authState.isLoading,
+
+        // actions
+        login,
+        register,
+        logout,
+        updateUser,
+
+        // utilitaires
+        requireAuth,
+        requireGuest
+    };
+
+};
