@@ -116,7 +116,7 @@ export interface AuthState {
     isLoading: boolean;
 }
 
-export interface DocumentState {
+export interface DocumentsState {
     documents: DocumentListItem[];
     stats: DocumentStats | null;
     isLoading: boolean;
